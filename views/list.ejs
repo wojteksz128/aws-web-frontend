@@ -1,0 +1,72 @@
+<html>
+	<body>
+		<% if (message==1){%>
+			<dialog open>  
+				<center>
+					<h3>
+						Success!
+					</h3>
+				</center>  
+				<center>
+					<p>
+						Delete file from bucket!
+					</p>
+				</center>
+				<center>
+					<button onclick="location.href='http://localhost:8080/list'">
+						OK
+					</button>
+				</center>
+			</dialog>  
+		<%}%>		
+	    <% if (message==2){%>
+			<dialog open>  
+				<center>
+					<h3>
+						Success!
+					</h3>
+				</center>  
+				<center>
+					<p>
+						Message was taken!
+					</p>
+				</center>
+				<center>
+					<button onclick="location.href='http://localhost:8080/list'">
+						OK
+					</button>
+				</center>
+			</dialog>  
+		<%}%>	
+		<h2>
+			List of files in bucket
+			<b><%= bucket %></b> :
+		</h2>
+		<div>        
+			<% for(var i=0; i<fields.length; i++) { %>		
+				<div>
+					<a href='<%= adresy[i] %>'>
+						<img src="<%= adresy[i] %>"
+						     alt="<%=names[i]%>"
+							 style="width:90px;height:90px;">
+					</a>
+				</div>
+				<div>
+					<form id="actionform"
+					      name="wartosc"
+						  action="http://localhost:8080/action"
+						  method='get'>
+						<input type="hidden"
+         		               name='klucz'
+							   value="<%= fields[i] %>"/>
+						<input type="submit"
+                               value="Turn"/>
+						<input type="button"
+                               onclick="location.href='http://localhost:8080/delete?klucz=<%= fields[i] %>'"
+							   value="Delete"/>
+					</form>
+				</div>		
+			<% } %>   
+		</div>
+	</body>
+</html>

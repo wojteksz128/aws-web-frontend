@@ -1,0 +1,45 @@
+<html>
+	<body >
+		<% if (message==1){%>
+			<dialog open >  
+				<center>
+					<h3>
+						Success!
+					</h3>
+				</center>  
+				<center>
+					<p>
+						File add to <%=bucket%>!
+					</p>
+				</center>
+				<center>
+					<button onclick="location.href='http://localhost:8080'">
+						OK
+					</button>
+				</center>
+			</dialog>  
+		<%}%>	
+		<div>	
+			<div> 
+				<div>
+					<form action="https://s3-us-west-2.amazonaws.com/<%=bucket%>/"
+					
+                          method="POST"
+						  enctype="multipart/form-data">	
+						<% if (message==0){%>
+							<% fields.forEach(function(elem){ %>
+								<input type="hidden" name="<%= elem.name  %>" value="<%=elem.value %>"/>
+							<%}); %> 
+						<%}%>
+						<input type="file" accept=".jpg,.png" name="file">
+						<p>
+							<b> File add to container <%=bucket%></b>
+						</p>
+						<input type="submit" value="Send"/>
+					</form>
+				</div>
+			</div>
+		</div>
+		<a href="http://localhost:8080/list">Show the contents <%=bucket%></a>
+	</body>
+</html>
