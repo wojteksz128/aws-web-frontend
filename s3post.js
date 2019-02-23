@@ -65,8 +65,6 @@ S3Form.prototype.generateS3FormFields = function() {
 	return formFields;	
 }
 
-
-
 S3Form.prototype.addS3CredientalsFields = function(fields, awsConfig){	
 	fields.push(hiddenField(
 		ACCESS_KEY_FIELD_NAME, awsConfig.accessKeyId));
@@ -79,14 +77,9 @@ S3Form.prototype.addS3CredientalsFields = function(fields, awsConfig){
 	return fields;
 }
 
-
 var hiddenField = function(fieldName, value) {
 	return {name: fieldName, value : value};
 }
-
-
-
-
 
 exports.Policy = Policy; // usage: policy = new Policy(policyData);
 exports.S3Form = S3Form; // usage: s3Form = new S3Form(awsConfig, policy);
