@@ -1,7 +1,10 @@
 {
   "name": "edit-photo-aws-web-frontent",
   "version": "0.0.1",
-  "description": "",
+  "description": "An application created for the purpose of the Development Of Object Oriented And Distributed Systems.",
+  "repository": {
+    "url": "https://github.com/wojteksz128/aws-web-frontend"
+  },
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
