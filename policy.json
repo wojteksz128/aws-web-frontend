@@ -4,7 +4,7 @@
 		[ "starts-with", "$key", "images/" ],
 		{ "bucket": "psoir-test-bucket" },
 		{ "acl": "private" },
-		{ "success_action_redirect": "success/" },
+		{ "success_action_redirect": "http://localhost/success/" },
 		[ "content-length-range", 0, 10485760000000 ]
 	]
 }

@@ -1,0 +1,31 @@
+{
+	"port": 80,
+	"endpoints": [
+		{
+			"path": "/",
+			"action": "createform"
+		},
+		{
+			"path": "/success",
+			"action": {
+				"template": "index.ejs",
+				"params": {
+					"message": 1,
+					"bucket": "psoir-test-bucket"
+				}
+			}
+		},
+		{
+			"path": "/list",
+			"action": "listobject"
+		},
+		{
+			"path": "/action",
+			"action": "action"
+		},
+		{
+			"path": "/delete",
+			"action": "delete"
+		}
+	]
+}

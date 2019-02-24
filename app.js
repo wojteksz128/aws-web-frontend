@@ -1,13 +1,13 @@
 var helpers = require("./helpers");
 var ACTIONS_FOLDER = "./actions/";
-var ACTIONS_CONFIG_FILE = "actions.json";
-var PORT = 8080;
+var SERVER_CONFIG_FILE = "server_conf.json";
 
 
 
-var actionsCfg = helpers.readJSONFile(ACTIONS_CONFIG_FILE);
+var serverConfig = helpers.readJSONFile(SERVER_CONFIG_FILE);
 
-actionsCfg.forEach(function(elem) {
+
+serverConfig.endpoints.forEach(function(elem) {
 	if(elem.action && elem.path) {
 		if(!elem.action.template) {
 			elem.action = require(ACTIONS_FOLDER + elem.action).action;
@@ -17,7 +17,7 @@ actionsCfg.forEach(function(elem) {
 	}
 });
 
-var service = require("webs-weeia").http(actionsCfg);
+var service = require("webs-weeia").http(serverConfig.endpoints);
 
-service(PORT);
-console.log("Server start and listened at port " + PORT);
+service(serverConfig.port);
+console.log("Server start and listened at port " + serverConfig.port);

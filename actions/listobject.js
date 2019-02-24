@@ -2,7 +2,6 @@ var helpers = require("../helpers");
 var AWS_CONFIG_FILE = "config.json";
 var template = "list.ejs";
 var AWS = require("aws-sdk");
-var imageFiles = [];
 var message = 0;
 
 var task = function(request, callback) {	
