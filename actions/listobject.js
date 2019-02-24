@@ -37,14 +37,10 @@ var task = function(request, callback) {
 
 			imageFiles.push(image);
 		}
-		exports.Pola= fields;
-		exports.Nazwy = nazwy;
-		exports.Adresy = adresy;
 	
 		callback(null, {
 			template: template, 
 			params: {
-				fields: fields, 
 				bucket: awsConfig.s3.bucket,
 				imageFiles: imageFiles,
 				message: message
