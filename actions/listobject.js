@@ -7,7 +7,7 @@ var message = 0;
 
 var task = function(request, callback) {	
 	AWS.config.loadFromPath(AWS_CONFIG_FILE);
-	new awsConfig = helpers.readJSONFile(AWS_CONFIG_FILE);
+	var awsConfig = helpers.readJSONFile(AWS_CONFIG_FILE);
 	var S3 = new AWS.S3();
 
 	var params = {
