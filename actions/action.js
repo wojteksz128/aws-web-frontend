@@ -1,30 +1,28 @@
-var util = require("util");
 var AWS = require("aws-sdk");
 var helpers = require("../helpers");
-var Policy = require("../s3post").Policy;
-var S3Form = require("../s3post").S3Form;
 var AWS_CONFIG_FILE = "config.json";
-var APP_CONFIG_FILE = "app.json";
-var POLICY_FILE = "policy.json";
 var succ = "list.ejs";
-var prefix = "/psoir-test-bucket/";
-var AWS = require("aws-sdk");
 var Queue = require("queuemanager");
-var message = 0;
 
 var task = function(request, callback){
 	//1. load configuration
 	AWS.config.loadFromPath(AWS_CONFIG_FILE);
-	var appConfig = helpers.readJSONFile(APP_CONFIG_FILE);
-	listobject = require('./listobject');   
-	var queue = new Queue(new AWS.SQS(), appConfig.QueueUrl);
+	var awsConfig = helpers.readJSONFile(AWS_CONFIG_FILE);  
+	var queue = new Queue(new AWS.SQS(), awsConfig.sqs.url);
 	
-	var klucz = request.param("klucz");
-	var msg = klucz;
+	var key = request.param("klucz");
+	var msg = key;
 	queue.sendMessage(msg, function(err, data){
-		if(err) { callback(err); return; }
-		callback(null,{template: succ, params:{
-			fields:listobject.Pola, bucket:"psoir-test-bucket",names:listobject.Nazwy,adresy:listobject.Adresy,message:2
+		if(err) {
+			callback(err);
+			return;
+		}
+
+		callback(null, {
+			template: succ, 
+			params:{
+				bucket:awsConfig.s3.bucket,
+				message:2
 			}});
 		});
    }	

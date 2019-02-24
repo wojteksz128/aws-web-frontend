@@ -5,7 +5,6 @@ var S3Form = require("../s3post").S3Form;
 var AWS_CONFIG_FILE = "config.json";
 var POLICY_FILE = "policy.json";
 var template = "list.ejs";
-var prefix = "/psoir-test-bucket/";
 var AWS = require("aws-sdk");
 var fields = []; 
 var nazwy =[];
@@ -14,11 +13,12 @@ var message = 0;
 
 var task = function(request, callback) {	
 	AWS.config.loadFromPath(AWS_CONFIG_FILE);
+	new awsConfig = helpers.readJSONFile(AWS_CONFIG_FILE);
 	var S3 = new AWS.S3();
 
 	var params = {
-		Bucket: 'psoir-test-bucket', /* required */
-		Prefix: 'images/'
+		Bucket: awsConfig.s3.bucket,
+		Prefix: awsConfig.s3.prefix
 	};
 	imageFiles = [];
 
@@ -36,7 +36,7 @@ var task = function(request, callback) {
 				field: object.Key,
 				fileName: getFileName(object.Key),
 				url: S3.getSignedUrl('getObject', params={
-					Bucket: 'psoir-test-bucket',
+					Bucket: awsConfig.s3.bucket,
 					Key: data.Contents[i].Key
 				})
 			};
@@ -51,7 +51,7 @@ var task = function(request, callback) {
 			template: template, 
 			params: {
 				fields: fields, 
-				bucket: "psoir-test-bucket",
+				bucket: awsConfig.s3.bucket,
 				imageFiles: imageFiles,
 				message: message
 			}

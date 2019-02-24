@@ -18,10 +18,6 @@
 		"action": "listobject"
 	},
 	{
-		"path": "/download",
-		"action": "download"
-	},
-	{
 		"path": "/action",
 		"action": "action"
 	},
