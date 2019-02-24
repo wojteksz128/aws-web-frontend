@@ -6,7 +6,7 @@ var S3Form = require("../s3post").S3Form;
 var AWS_CONFIG_FILE = "config.json";
 var POLICY_FILE = "policy.json";
 var succ = "list.ejs";
-var prefix = "/kovalchukbucket/";
+var prefix = "/psoir-test-bucket/";
 var message= 0;
 var haderr= false
 var fields = []; 
@@ -20,7 +20,7 @@ var task = function(request, callback){
 	var klucz = request.param("klucz");
 	
 	var object = {
-			Bucket: 'kovalchukbucket',
+			Bucket: 'psoir-test-bucket',
 			Key : klucz
 	};
 
@@ -32,7 +32,7 @@ var task = function(request, callback){
 	}
 	else{
 		message = 1;
-		callback(null, {template: succ, params:{fields:listobject.Pola, bucket:"kovalchukbucket",names:listobject.Nazwy,adresy:listobject.Adresy,message:message}});
+		callback(null, {template: succ, params:{fields:listobject.Pola, bucket:"psoir-test-bucket",names:listobject.Nazwy,adresy:listobject.Adresy,message:message}});
 
 	}});	
 }

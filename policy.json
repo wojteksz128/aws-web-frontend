@@ -1,6 +1,6 @@
 {	"expiration" : {"day":1},
 	"conditions": [ ["starts-with", "$key", "zdjecia/"],
-    				 {"bucket": "kovalchukbucket"}, 
+    				 {"bucket": "psoir-test-bucket"}, 
     				 {"acl": "private"},
     				 {"success_action_redirect": "http://localhost:8080/success/"},   
     				 ["content-length-range", 0, 10485760000000]

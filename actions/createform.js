@@ -5,7 +5,7 @@ var S3Form = require("../s3post").S3Form;
 var AWS_CONFIG_FILE = "config.json";
 var POLICY_FILE = "policy.json";
 var INDEX_TEMPLATE = "index.ejs";
-var prefix = "/kovalchukbucket/";
+var prefix = "/psoir-test-bucket/";
 
 var task = function(request, callback){
 	//1. load configuration

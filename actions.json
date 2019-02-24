@@ -4,7 +4,7 @@
 	{"path":"/download","action":"download"},
 	{"path":"/action","action":"action"},
 	{"path":"/delete","action":"delete"},
-	{"path": "/success", "action":{"template": "index.ejs", "params":{"message":1, "bucket":"kovalchukbucket"}}},
+	{"path": "/success", "action":{"template": "index.ejs", "params":{"message":1, "bucket":"psoir-test-bucket"}}},
 	{"path":"/","action":"createform"},	
 	{"path":"/digest","action":"digest"}
 ]

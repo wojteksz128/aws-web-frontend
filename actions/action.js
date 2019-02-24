@@ -7,7 +7,7 @@ var AWS_CONFIG_FILE = "config.json";
 var APP_CONFIG_FILE = "app.json";
 var POLICY_FILE = "policy.json";
 var succ = "list.ejs";
-var prefix = "/kovalchukbucket/";
+var prefix = "/psoir-test-bucket/";
 var AWS = require("aws-sdk");
 var Queue = require("queuemanager");
 var message = 0;
@@ -24,7 +24,7 @@ var task = function(request, callback){
 	queue.sendMessage(msg, function(err, data){
 		if(err) { callback(err); return; }
 		callback(null,{template: succ, params:{
-			fields:listobject.Pola, bucket:"kovalchukbucket",names:listobject.Nazwy,adresy:listobject.Adresy,message:2
+			fields:listobject.Pola, bucket:"psoir-test-bucket",names:listobject.Nazwy,adresy:listobject.Adresy,message:2
 			}});
 		});
    }	

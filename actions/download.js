@@ -6,7 +6,7 @@ var S3Form = require("../s3post").S3Form;
 var AWS_CONFIG_FILE = "config.json";
 var POLICY_FILE = "policy.json";
 var succ = "success.ejs";
-var prefix = "/kovalchukbucket/";
+var prefix = "/psoir-test-bucket/";
 var message= "";
 var haderr= false
 
@@ -17,7 +17,7 @@ var task = function(request, callback){
 	var klucz = request.param("klucz");
 	console.log(klucz);
 	var opcje = {
-			Bucket: 'kovalchukbucket',
+			Bucket: 'psoir-test-bucket',
 			Key : klucz
 	};
 

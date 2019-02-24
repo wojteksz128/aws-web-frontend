@@ -5,7 +5,7 @@ var S3Form = require("../s3post").S3Form;
 var AWS_CONFIG_FILE = "config.json";
 var POLICY_FILE = "policy.json";
 var template = "list.ejs";
-var prefix = "/kovalchukbucket/";
+var prefix = "/psoir-test-bucket/";
 var AWS = require("aws-sdk");
 var fields = []; 
 var nazwy =[];
@@ -17,7 +17,7 @@ var task = function(request, callback){
 	var S3 = new AWS.S3();
 
 	var params = {
-		      Bucket: 'kovalchukbucket', /* required */
+		      Bucket: 'psoir-test-bucket', /* required */
 			  Marker: 'zdjecia'
 			  
 	};
@@ -32,7 +32,7 @@ var task = function(request, callback){
 			}
 			for(var i=0; i<data.Contents.length;i++){
 				nazwy[i] = data.Contents[i].Key.substring(8);
-				S3.getSignedUrl('getObject', params={Bucket: 'kovalchukbucket',Key:data.Contents[i].Key}, function (err, url) {
+				S3.getSignedUrl('getObject', params={Bucket: 'psoir-test-bucket',Key:data.Contents[i].Key}, function (err, url) {
 					adresy[i]=url;
 				});
 			}
@@ -40,7 +40,7 @@ var task = function(request, callback){
 			exports.Nazwy = nazwy;
 			exports.Adresy = adresy;
 		
-			callback(null, {template: template, params:{fields:fields, bucket:"kovalchukbucket",names:nazwy,adresy:adresy,message:message}});
+			callback(null, {template: template, params:{fields:fields, bucket:"psoir-test-bucket",names:nazwy,adresy:adresy,message:message}});
 		}
 	});
 }
