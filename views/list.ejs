@@ -39,33 +39,23 @@
 			</dialog>  
 		<%}%>	
 		<h2>
-			List of files in bucket
-			<b><%= bucket %></b> :
+			List of files in <b><%= bucket %></b> bucket:
 		</h2>
-		<div>        
-			<% for(var i=0; i<fields.length; i++) { %>		
-				<div>
-					<a href='<%= adresy[i] %>'>
-						<img src="<%= adresy[i] %>"
-						     alt="<%=names[i]%>"
-							 style="width:90px;height:90px;">
-					</a>
-				</div>
-				<div>
-					<form id="actionform"
-					      name="wartosc"
-						  action="http://localhost:8080/action"
-						  method='get'>
-						<input type="hidden"
-         		               name='klucz'
-							   value="<%= fields[i] %>"/>
-						<input type="submit"
-                               value="Turn"/>
-						<input type="button"
-                               onclick="location.href='http://localhost:8080/delete?klucz=<%= fields[i] %>'"
-							   value="Delete"/>
-					</form>
-				</div>		
+		<div>
+			<% for(var i = 0; i < imageFiles.length; ++i) { 
+                var image = imageFiles[i] %>
+				<form id="actionform" name="wartosc" action="http://localhost:8080/action" method='get'>
+					<div>
+						<a href='<%= image.url %>'>
+							<img src="<%= image.url %>" alt="<%= image.fileName %>" style="width:90px; height:90px;">
+						</a>
+					</div>
+					<div>
+                        <input type="hidden" name='klucz' value="<%= image.field %>"/>
+                        <input type="submit" value="Turn"/>
+                        <input type="button" onclick="location.href='http://localhost:8080/delete?klucz=<%= image.field %>'" value="Delete"/>
+					</div>
+				</form>		
 			<% } %>   
 		</div>
 	</body>
