@@ -5,9 +5,8 @@ var S3Form = require("../s3post").S3Form;
 var AWS_CONFIG_FILE = "config.json";
 var POLICY_FILE = "policy.json";
 var INDEX_TEMPLATE = "index.ejs";
-var prefix = "/psoir-test-bucket/";
 
-var task = function(request, callback){
+var task = function(request, callback) {
 	//1. load configuration
 	var awsConfig = helpers.readJSONFile(AWS_CONFIG_FILE);
 	var policyData = helpers.readJSONFile(POLICY_FILE);
@@ -24,6 +23,14 @@ var task = function(request, callback){
 	//4. get bucket name
 	var bucket = policy.getConditionValueByKey("bucket");
 	
-	callback(null, {template: INDEX_TEMPLATE, params:{fields:fields, bucket:bucket, message:0}});
-	}
-	exports.action = task;
+	callback(null, {
+		template: INDEX_TEMPLATE, 
+		params: {
+			fields: fields, 
+			bucket: bucket, 
+			message: 0
+		}
+	});
+}
+
+exports.action = task;

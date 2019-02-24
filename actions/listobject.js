@@ -18,7 +18,7 @@ var task = function(request, callback){
 
 	var params = {
 		      Bucket: 'psoir-test-bucket', /* required */
-			  Marker: 'zdjecia'
+			  Marker: 'images'
 			  
 	};
 	fields = [];

@@ -1,7 +1,7 @@
 {
 	"expiration": { "day": 1 },
 	"conditions": [
-		[ "starts-with", "$key", "zdjecia/" ],
+		[ "starts-with", "$key", "images/" ],
 		{ "bucket": "psoir-test-bucket" },
 		{ "acl": "private" },
 		{ "success_action_redirect": "http://localhost:8080/success/" },

@@ -1,10 +1,32 @@
 [
-	{"path": "/digestForm", "action":{"template":"digestForm.ejs", "params":[]} },
-	{"path": "/list", "action":"listobject"},
-	{"path":"/download","action":"download"},
-	{"path":"/action","action":"action"},
-	{"path":"/delete","action":"delete"},
-	{"path": "/success", "action":{"template": "index.ejs", "params":{"message":1, "bucket":"psoir-test-bucket"}}},
-	{"path":"/","action":"createform"},	
-	{"path":"/digest","action":"digest"}
+	{
+		"path": "/",
+		"action": "createform"
+	},
+	{
+		"path": "/success",
+		"action": {
+			"template": "index.ejs",
+			"params": {
+				"message": 1,
+				"bucket": "psoir-test-bucket"
+			}
+		}
+	},
+	{
+		"path": "/list",
+		"action": "listobject"
+	},
+	{
+		"path": "/download",
+		"action": "download"
+	},
+	{
+		"path": "/action",
+		"action": "action"
+	},
+	{
+		"path": "/delete",
+		"action": "delete"
+	}
 ]
