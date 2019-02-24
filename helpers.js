@@ -86,6 +86,23 @@ var encode = function(obj, encoding) {
 	return new Buffer(stringifyObj).toString(encoding);
 }
 
+var dateToString = function(x, y) {
+    var z = {
+        M: x.getMonth() + 1,
+        d: x.getDate(),
+        h: x.getHours(),
+        m: x.getMinutes(),
+        s: x.getSeconds()
+    };
+    y = y.replace(/(M+|d+|h+|m+|s+)/g, function(v) {
+        return ((v.length > 1 ? "0" : "") + eval('z.' + v.slice(-1))).slice(-2)
+    });
+
+    return y.replace(/(y+)/g, function(v) {
+        return x.getFullYear().toString().slice(-v.length)
+    });
+}
+
 var readJSONFile = function(fileName){
 	if(!fs.existsSync(fileName)) {
 		console.log("unable to open file: " + fileName);
@@ -97,8 +114,9 @@ var readJSONFile = function(fileName){
 	return object;	  	
 }
 
-exports.calculateDigest = calculateDigest; //= function(algorithm, text, encoding) e.g. calculateMultiDigest("md5", "some text", "hex")
-exports.calculateMultiDigest = calculateMultiDigest; //= function(doc, algorithms, callback, loopCount)
-exports.hmac = hmac; // = function(algorithm, key, text, encoding) 
-exports.encode = encode; //encode = function(obj, encoding)
-exports.readJSONFile = readJSONFile; // = function(fileName)
+exports.calculateDigest = calculateDigest;
+exports.calculateMultiDigest = calculateMultiDigest;
+exports.hmac = hmac;
+exports.encode = encode;
+exports.readJSONFile = readJSONFile;
+exports.dateToString = dateToString;

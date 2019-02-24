@@ -1,10 +1,19 @@
 var util = require("util");
 var moment = require("moment");
 var helpers = require("./helpers");
+var crypto = require("crypto-js")
 
 var ACCESS_KEY_FIELD_NAME = "AWSAccessKeyId";
 var POLICY_FIELD_NAME = "policy";
 var SIGNATURE_FIELD_NAME = "signature";
+
+var V4_ALGORITHM_NAME = "X-Amz-Algorithm";
+var V4_ALGORITHM_VALUE = "AWS4-HMAC-SHA256";
+var V4_CREDENTIAL_NAME = "X-Amz-Credential";
+var V4_DATE_NAME = "X-Amz-Date";
+var V4_EXPIRES_NAME = "X-Amz-Expires";
+var V4_SIGNED_HEADERS_NAME = "X-Amz-SignedHeaders";
+var V4_SIGNATURE_NAME = "X-Amz-Signature";
 
 var Policy = function(policyData){
 	this.policy = policyData;	
@@ -65,23 +74,66 @@ S3Form.prototype.generateS3FormFields = function() {
 	return formFields;	
 }
 
-S3Form.prototype.addS3CredientalsFields = function(fields, awsConfig){	
-	fields.push(hiddenField(
-		ACCESS_KEY_FIELD_NAME, awsConfig.accessKeyId));
+S3Form.prototype.addS3CredientalsFields = function(fields, awsConfig) {	
 
-	fields.push(hiddenField(
-		POLICY_FIELD_NAME, this.policy.generateEncodedPolicyDocument()));
+	var encodedPolicy = this.policy.generateEncodedPolicyDocument();
 
-	fields.push(hiddenField(
-		SIGNATURE_FIELD_NAME, this.policy.generateSignature(awsConfig.secretAccessKey)));
+	if (awsConfig.signatureVersion == 'v4') {
+		var currentDate = new Date();
+		var utcDate = new Date(currentDate.valueOf() + currentDate.getTimezoneOffset() * 60000);
+		var onlyDate = helpers.dateToString(utcDate, 'yyyyMMdd');
+		var iso8601Date = helpers.dateToString(utcDate, 'yyyyMMddThhmmssZ');
+
+		var credential = assembleV4CredentialValue(awsConfig.accessKeyId, onlyDate, awsConfig.region);
+		var date = iso8601Date;
+		var expires = Math.round((new Date(this.policy.policy.expiration) - currentDate)/1000);
+
+		this.policy.policy.conditions.push(assembleObject(V4_ALGORITHM_NAME, V4_ALGORITHM_VALUE));
+		this.policy.policy.conditions.push(assembleObject(V4_CREDENTIAL_NAME, credential));
+		this.policy.policy.conditions.push(assembleObject(V4_DATE_NAME, iso8601Date));
+		this.policy.policy.conditions.push(assembleObject(V4_EXPIRES_NAME, expires.toString()));
+		this.policy.policy.conditions.push(assembleObject(V4_SIGNED_HEADERS_NAME, "host"));
+		encodedPolicy = this.policy.generateEncodedPolicyDocument();
+
+		var signature = getSignatureKey(crypto, awsConfig.secretAccessKey, onlyDate, awsConfig.region, "s3", encodedPolicy);
+
+		fields.push(hiddenField(V4_ALGORITHM_NAME, V4_ALGORITHM_VALUE));
+		fields.push(hiddenField(V4_CREDENTIAL_NAME, credential));
+		fields.push(hiddenField(V4_DATE_NAME, date));
+		fields.push(hiddenField(V4_EXPIRES_NAME, expires));
+		fields.push(hiddenField(V4_SIGNED_HEADERS_NAME, "host"));
+		fields.push(hiddenField(V4_SIGNATURE_NAME, signature));
+	} else {
+		fields.push(hiddenField(ACCESS_KEY_FIELD_NAME, awsConfig.accessKeyId));
+		fields.push(hiddenField(SIGNATURE_FIELD_NAME, this.policy.generateSignature(awsConfig.secretAccessKey)));
+	}
+	
+	fields.push(hiddenField(POLICY_FIELD_NAME, encodedPolicy));
+	
 	return fields;
+}
+
+var assembleObject = function(key, value) {
+	var obj = {};
+	obj[key] = value;
+	return obj;
+}
+
+var assembleV4CredentialValue = function(accessKeyId, date, region) {
+	return accessKeyId + "/" + date + "/" + region + "/s3/aws4_request";
+}
+
+var getSignatureKey = function(Crypto, key, dateStamp, regionName, serviceName, policy) {
+    var kDate = Crypto.HmacSHA256(dateStamp, "AWS4" + key);
+    var kRegion = Crypto.HmacSHA256(regionName, kDate);
+    var kService = Crypto.HmacSHA256(serviceName, kRegion);
+    var kSigning = Crypto.HmacSHA256("aws4_request", kService);
+    return Crypto.HmacSHA256(policy, kSigning).toString();
 }
 
 var hiddenField = function(fieldName, value) {
 	return {name: fieldName, value : value};
 }
 
-exports.Policy = Policy; // usage: policy = new Policy(policyData);
-exports.S3Form = S3Form; // usage: s3Form = new S3Form(awsConfig, policy);
-
-
+exports.Policy = Policy;
+exports.S3Form = S3Form;
