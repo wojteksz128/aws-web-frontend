@@ -1,0 +1,16 @@
+[Unit]
+Description=Node.js AWS Web Server
+
+[Service]
+ExecStart=/home/ubuntu/aws-web-frontend/srv_start
+WorkingDirectory=/home/ubuntu/aws-web-frontend
+Restart=always
+RestartSec=10
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=nodejs-aws-web-server
+User=ubuntu
+Environment=NODE_ENV=production PORT=1337
+
+[Install]
+WantedBy=multi-user.target
